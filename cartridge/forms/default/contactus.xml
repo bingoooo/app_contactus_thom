@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<form xmlns="http://www.demandware.com/xml/form/2008-04-19">
+	<radio formid="prefix" label="${Resource.msg('contactus.prefix', 'contactus', null)}" type="radio" mandatory="true" />
+	<field formid="firstname" label="${Resource.msg('label.input.firstname.profile', 'forms', null)}" type="string" mandatory="true" max-length="50" />
+	<field formid="lastname" label="${Resource.msg('label.input.lastname.profile', 'forms', null)}" type="string" mandatory="true" max-length="50" />
+	<field formid="email" label="${Resource.msg('label.input.email.profile', 'forms', null)}" type="string" mandatory="true" max-length="50" />
+	<field formid="phone" label="${Resource.msg('label.input.phone.profile', 'forms', null)}" type="string" mandatory="false" max-length="50" />
+	<field formid="question" label="${Resource.msg('contactus.question', 'contactus', null)}" type="string" mandatory="true" max-length="50" />
+	<field formid="order" label="${Resource.msg('contactus.question', 'contactus', null)}" type="string" mandatory="false" max-length="50" />
+	<field formid="message" label="${Resource.msg('contactus.message', 'contactus', null)}" type="string" mandatory="false" max-length="50" />
+	<action formid="submit" valid-form="true"/>
+</form>
