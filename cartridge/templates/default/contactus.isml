@@ -13,23 +13,29 @@
 			<input type="radio" id="prefixm" class="form-control" name="prefix" />
 			${Resource.msg('gender.female.prefix', 'contactus', null)}
 			<input type="radio" id="prefixf" class="form-control" name="prefix" />
-			<input type="text" id="firstname" class="form-control" name="firstname" value="${pdict.customer.firstName}" />
+		</div>
+		<div class="form-group required">
+			<input type="text" id="firstname" class="form-control" name="firstname" value="${pdict.customer ? pdict.customer.firstName : ''}" />
 			<label for="firstname"> ${Resource.msg('label.input.firstname.profile', 'forms', null)} </label>
-			<input type="text" id="lastname" class="form-control" name="lastname" value="${pdict.customer.lastName}" />
+		</div>
+		<div class="form-group required">
+			<input type="text" id="lastname" class="form-control" name="lastname" value="${pdict.customer ? pdict.customer.lastName : ''}" />
 			<label for="lastname"> ${Resource.msg('label.input.lastname.profile', 'forms', null)} </label>
-			<input type="text" id="email" class="form-control" name="email" value="${pdict.customer.email}" />
+		</div>
+		<div class="form-group required">
+			<input type="text" id="email" class="form-control" name="email" value="${pdict.customer ? pdict.customer.email : ''}" />
 			<label for="email"> ${Resource.msg('label.input.email.profile', 'forms', null)} </label>
 		</div>
-		<div class="form-group">
-			<input type="text" id="email" class="form-control" name="email" value="${pdict.customer.phone}" />
+		<div class="form-group required">
+			<input type="text" id="phone" class="form-control" name="phone" value="${pdict.customer ? pdict.customer.phone : ''}" />
 			<label for="phone"> ${Resource.msg('label.input.phone.profile', 'forms', null)} </label>
 		</div>
 		<div class="form-group required">
 			<label for="question"> ${Resource.msg('contactus.question', 'contactus', null)} </label>
-			<select id="question" class="form-control"  value="${Resource.msg('contactus.question', 'contactus', null)}">
-				<option value="${Resource.msg('contactus.emailone', 'contactus', null)}">${Resource.msg('contactus.questionone', 'contactus', null)}</option>
-				<option value="${Resource.msg('contactus.emailtwo', 'contactus', null)}">${Resource.msg('contactus.questiontwo', 'contactus', null)}</option>
-				<option value="${Resource.msg('contactus.emailthree', 'contactus', null)}">${Resource.msg('contactus.questionthree', 'contactus', null)}</option>
+			<select id="question" class="form-control" name="question" value="${Resource.msg('contactus.question', 'contactus', null)}">
+				<option value="1">${Resource.msg('contactus.questionone', 'contactus', null)}</option>
+				<option value="2">${Resource.msg('contactus.questiontwo', 'contactus', null)}</option>
+				<option value="3">${Resource.msg('contactus.questionthree', 'contactus', null)}</option>
 			</select>
 			<label for="order"> ${Resource.msg('contactus.ordernumber', 'contactus', null)} </label>
 			<input type="text" id="order" class="form-control" name="order" />

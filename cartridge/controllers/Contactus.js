@@ -25,6 +25,39 @@
 
 var server = require('server');
 var URLUtils = require('dw/web/URLUtils');
+var Resource = require('dw/web/Resource');
+
+function getSubject(id)
+{
+	if (id == "1")
+		{
+			return Resource.msg("contactus.questionone", "contactus", null);
+		}
+	if (id == "2")
+	{
+		return Resource.msg("contactus.questiontwo", "contactus", null);
+	}
+	if (id == "3")
+	{
+		return Resource.msg("contactus.questionthree", "contactus", null);
+	}
+}
+
+function getEmail(id)
+{
+	if (id == "1")
+		{
+			return Resource.msg("contactus.emailone", "contactus", null);
+		}
+	if (id == "2")
+	{
+		return Resource.msg("contactus.emailtwo", "contactus", null);
+	}
+	if (id == "3")
+	{
+		return Resource.msg("contactus.emailthree", "contactus", null);
+	}
+}
 
 server.get('Show', function(req, res, next){
 	var currentCustomer = req.currentCustomer.profile;
@@ -36,7 +69,9 @@ server.get('Show', function(req, res, next){
 })
 
 server.post('Submit', function(req, res, next){
-	res.json({message: 'OK', request: req.form});
+	var subject = getSubject(req.form.question);
+	var email = getEmail(req.form.question);
+	res.json({message: 'OK', request: req.form, subject: subject, email: email});
 	next();
 });
 
