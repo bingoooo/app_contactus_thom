@@ -1,6 +1,13 @@
 <isdecorate template="common/layout/page">
 <div class="align-items-center">
     <h1>${Resource.msg('contactus.contact', 'contactus', null)} ${Resource.msg('global.home.name', 'global', null)}</h1>
+    
+    <isif condition="${pdict.csrfError}">
+    	<p><isprint value="${Resource.msg('error.csrf.token.mismatch', 'common', null)}" /></p>
+    	<isprint value="${pdict.csrfError}" />
+    </isif>
+    	<p><isprint value="${Resource.msg('error.csrf.token.mismatch', 'common', null)}" /></p>
+    	<p><isprint value="${Resource.msg('contactus.questions.one', 'contactus', null)}" /></p>
 
     <isslot id="contactus-top-html" context="global" context-object="" description="Top html content" />
 
@@ -42,6 +49,10 @@
                 <label for="message"> ${Resource.msg('contactus.message', 'contactus', null)} </label>
                 <textarea id="message" class="form-control" name="message" rows="5"></textarea>
             </div>
+            
+            <input name="${dw.web.CSRFProtection.getTokenName()}"
+             value="${dw.web.CSRFProtection.generateToken()">
+            
             <div class="">
                 <button type="submit" class="c-newsletter__btn c-btn-primary" style="margin:auto">${Resource.msg('contactus.sendmessage', 'contactus', null)}</button>
             </div>

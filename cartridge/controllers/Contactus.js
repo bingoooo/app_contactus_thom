@@ -95,10 +95,19 @@ server.get('Show', function(req, res, next){
 server.post('Submit', function(req, res, next){
 	try
 	{
+		if (!dw.web.CSRFProtection.validateRequest()){
+			var currentCustomer = req.currentCustomer.profile;
+			var currentForm = server.forms.getForm('contactus');
+			var actionUrl = URLUtils.url('Contactus-Submit')
+			res.render('contactus', {csrfError: Resource.msg('error.csrf.token.mismatch', 'common', null), customer: currentCustomer, form: currentForm, actionUrl: actionUrl});
+			next();
+		}
 		var subject = getSubject(req.form.question);
 		var email = getEmail(req.form.question);
 		var template = 'mail/contactus.isml';
-		//sendMail({customer: req.form, subject: subject, email: email}, template);
+		if (req.form) {
+			sendMail({customer: req.form, subject: subject, email: email}, template);
+		}
 		res.json({message: 'OK', request: req.form, subject: subject, email: email});
 		//res.render('mail/contactus', {customer: req.form, subject: subject, email: email});
 		next();
