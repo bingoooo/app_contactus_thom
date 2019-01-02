@@ -3,16 +3,15 @@
     <h1>${Resource.msg('contactus.contact', 'contactus', null)} ${Resource.msg('global.home.name', 'global', null)}</h1>
     
     <isif condition="${pdict.csrfError}">
-    	<p><isprint value="${Resource.msg('error.csrf.token.mismatch', 'common', null)}" /></p>
     	<isprint value="${pdict.csrfError}" />
     </isif>
-    	<p><isprint value="${Resource.msg('error.csrf.token.mismatch', 'common', null)}" /></p>
-    	<p><isprint value="${Resource.msg('contactus.questions.one', 'contactus', null)}" /></p>
 
     <isslot id="contactus-top-html" context="global" context-object="" description="Top html content" />
 
     <div class="align-items-center">
         <form action="${pdict.actionUrl}" class="login" method="POST" name="SFRAHelloForm">
+            
+            <input name="${dw.web.CSRFProtection.getTokenName()}" value="${dw.web.CSRFProtection.generateToken()}" type="hidden" />
 
             <div class="form-group required">
                 <label> ${Resource.msg('contactus.prefix', 'contactus', null)}:* </label>
@@ -40,9 +39,11 @@
             <div class="form-group required">
                 <label for="question"> ${Resource.msg('contactus.question', 'contactus', null)} </label>
                 <select id="question" class="form-control" name="question" value="${Resource.msg('contactus.question', 'contactus', null)}">
-                    <option value="1">${Resource.msg('contactus.questionone', 'contactus', null)}</option>
-                    <option value="2">${Resource.msg('contactus.questiontwo', 'contactus', null)}</option>
-                    <option value="3">${Resource.msg('contactus.questionthree', 'contactus', null)}</option>
+                 <isset name="qcount" value="${1}" scope="page" />
+                 <isloop iterator="${pdict.questions}" alias="question">
+                    <option value="${qcount}">${question}</option>
+                    <isset name="qcount" value="${qcount + 1}" scope="page" />
+                 </isloop>
                 </select>
                 <label for="order"> ${Resource.msg('contactus.ordernumber', 'contactus', null)} </label>
                 <input type="text" id="order" class="form-control" name="order" />
@@ -50,11 +51,9 @@
                 <textarea id="message" class="form-control" name="message" rows="5"></textarea>
             </div>
             
-            <input name="${dw.web.CSRFProtection.getTokenName()}"
-             value="${dw.web.CSRFProtection.generateToken()">
             
             <div class="">
-                <button type="submit" class="c-newsletter__btn c-btn-primary" style="margin:auto">${Resource.msg('contactus.sendmessage', 'contactus', null)}</button>
+                <button type="submit" class="c-newsletter__btn c-btn-primary" style="margin:auto"><isprint value="${Resource.msg('contactus.sendmessage', 'contactus', null)}" /></button>
             </div>
         </form>
         <isslot id="contactus-bottom-html" context="global" context-object="" description="Bottom html content" />

@@ -30,7 +30,9 @@ var Template = require('dw/util/Template');
 
 function getSubject(id)
 {
-	if (id == "1")
+	var number = id.split('.');
+	var intPart = number[0];
+	/*if (id == "1")
 		{
 			return Resource.msg("contactus.questionone", "contactus", null);
 		}
@@ -41,22 +43,23 @@ function getSubject(id)
 	if (id == "3")
 	{
 		return Resource.msg("contactus.questionthree", "contactus", null);
-	}
+	}*/
+	return Resource.msg("contactus.questions." + intPart, "contactus", null);
 }
 
 function getEmail(id)
 {
 	if (id == "1")
 		{
-			return Resource.msg("contactus.emailone", "contactus", null);
+			return Resource.msg("contactus.emailone", "emails", null);
 		}
 	if (id == "2")
 	{
-		return Resource.msg("contactus.emailtwo", "contactus", null);
+		return Resource.msg("contactus.emailtwo", "emails", null);
 	}
 	if (id == "3")
 	{
-		return Resource.msg("contactus.emailthree", "contactus", null);
+		return Resource.msg("contactus.emailthree", "emails", null);
 	}
 }
 
@@ -82,13 +85,30 @@ function sendMail(mailInfos, template)
 	mail.send();
 }
 
+function getQuestions(field, file)
+{
+	var result = [];
+	var index = 0;
+	for (var i = 1; i < 32; i++)
+		{
+			if (Resource.msg(field + '.' + i, file, null) == field + '.' + i)
+				{
+				 break;
+				}
+			result.push(Resource.msg(field + '.' + i, file, null));
+			index++;
+		}
+	return result;
+}
+
 server.get('Show', function(req, res, next){
 	var currentCustomer = req.currentCustomer.profile;
 	//var currentForm = server.forms.getForm('test');
 	var currentForm = server.forms.getForm('contactus');
 	var actionUrl = URLUtils.url('Contactus-Submit')
-	res.render('contactus', {customer: currentCustomer, form: currentForm, actionUrl: actionUrl});
-	//res.json({customer: currentCustomer});
+	var questions = getQuestions('contactus.questions', 'contactus');
+	res.render('contactus', {customer: currentCustomer, form: currentForm, actionUrl: actionUrl, questions: questions});
+	//res.json({questions: questions});
 	next();
 })
 
@@ -96,17 +116,20 @@ server.post('Submit', function(req, res, next){
 	try
 	{
 		if (!dw.web.CSRFProtection.validateRequest()){
-			var currentCustomer = req.currentCustomer.profile;
+			/*var currentCustomer = req.currentCustomer.profile;
 			var currentForm = server.forms.getForm('contactus');
-			var actionUrl = URLUtils.url('Contactus-Submit')
+			var actionUrl = URLUtils.url('Contactus-Submit');
 			res.render('contactus', {csrfError: Resource.msg('error.csrf.token.mismatch', 'common', null), customer: currentCustomer, form: currentForm, actionUrl: actionUrl});
+			*/
+			res.redirect(URLUtils.url('Contactus-Show'));
 			next();
+			return;
 		}
 		var subject = getSubject(req.form.question);
 		var email = getEmail(req.form.question);
 		var template = 'mail/contactus.isml';
 		if (req.form) {
-			sendMail({customer: req.form, subject: subject, email: email}, template);
+			//sendMail({customer: req.form, subject: subject, email: email}, template);
 		}
 		res.json({message: 'OK', request: req.form, subject: subject, email: email});
 		//res.render('mail/contactus', {customer: req.form, subject: subject, email: email});
