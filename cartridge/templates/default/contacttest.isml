@@ -1,18 +1,17 @@
 <isdecorate template="common/layout/page">
-<div class="align-items-center">
     <h1>${Resource.msg('contactus.contact', 'contactus', null)} ${Resource.msg('global.home.name', 'global', null)}</h1>
 
     <isslot id="contactus-top-html" context="global" context-object="" description="Top html content" />
 
-    <div class="align-items-center">
+    <div class="card">
         <form action="${pdict.actionUrl}" class="login" method="POST" name="SFRAHelloForm">
 
             <div class="form-group required">
                 <label> ${Resource.msg('contactus.prefix', 'contactus', null)}:* </label>
                 ${Resource.msg('gender.male.prefix', 'contactus', null)}
-                <input type="radio" id="prefixm" class="form-control" name="prefix" value="${Resource.msg('gender.male.prefix', 'contactus', null)}" />
+                <input type="radio" id="prefixm" class="form-control" name="prefix" />
                 ${Resource.msg('gender.female.prefix', 'contactus', null)}
-                <input type="radio" id="prefixf" class="form-control" name="prefix" value="${Resource.msg('gender.female.prefix', 'contactus', null)}" />
+                <input type="radio" id="prefixf" class="form-control" name="prefix" />
             </div>
             <div class="form-group required">
                 <input type="text" id="firstname" class="form-control" name="firstname" value="${pdict.customer ? pdict.customer.firstName : ''}" />
@@ -42,11 +41,12 @@
                 <label for="message"> ${Resource.msg('contactus.message', 'contactus', null)} </label>
                 <textarea id="message" class="form-control" name="message" rows="5"></textarea>
             </div>
-            <div class="">
-                <button type="submit" class="c-newsletter__btn c-btn-primary" style="margin:auto">${Resource.msg('contactus.sendmessage', 'contactus', null)}</button>
-            </div>
+            <button type="submit" class="c-newsletter__btn c-btn-primary" style="text-align:center">${Resource.msg('contactus.sendmessage',
+                                                                                                    'contactus', null)}</button>
         </form>
-        <isslot id="contactus-bottom-html" context="global" context-object="" description="Bottom html content" />
     </div>
-</div>
+
+    <isslot id="contactus-bottom-html" context="global" context-object="" description="Top html content" />
+
+
 </isdecorate>

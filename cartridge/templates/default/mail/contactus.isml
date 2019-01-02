@@ -1,0 +1,8 @@
+<p>Message from :</p>
+<p>
+${pdict.firstname} ${pdict.lastname}<br/>
+${pdict.email}<br/>
+${pdict.phone}<br/>
+${Resource.msg("label.orderhistory.ordernumber", "account", null)} : 
+</p>
+<p>${pdict.message}</p>

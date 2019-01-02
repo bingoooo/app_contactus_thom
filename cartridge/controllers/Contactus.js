@@ -26,6 +26,7 @@
 var server = require('server');
 var URLUtils = require('dw/web/URLUtils');
 var Resource = require('dw/web/Resource');
+var Template = require('dw/util/Template');
 
 function getSubject(id)
 {
@@ -59,8 +60,31 @@ function getEmail(id)
 	}
 }
 
+function sendMail(mailInfos, template)
+{
+	var template = new Template("mail/contactus.isml");
+
+	var infos = new dw.util.HashMap();
+	infos.put("firstname", mailInfos.customer.firstname);
+	infos.put("lastname", mailInfos.customer.lastname);
+	infos.put("email", mailInfos.customer.email);
+	infos.put("phone", mailInfos.customer.phone);
+	infos.put("message", mailInfos.customer.message);
+
+	var content = template.render(infos);
+	var mail = new dw.net.Mail();
+	mail.addTo(mailInfos.email);
+	mail.setFrom(mailInfos.customer.email);
+	mail.setSubject(mailInfos.subject + " " + mailInfos.customer.order);
+	mail.setContent(content);
+	//mail.setContent(mailInfos.customer.firstname + " " + mailInfos.customer.lastname + "\n" + mailInfos.customer.message);
+
+	mail.send();
+}
+
 server.get('Show', function(req, res, next){
 	var currentCustomer = req.currentCustomer.profile;
+	//var currentForm = server.forms.getForm('test');
 	var currentForm = server.forms.getForm('contactus');
 	var actionUrl = URLUtils.url('Contactus-Submit')
 	res.render('contactus', {customer: currentCustomer, form: currentForm, actionUrl: actionUrl});
@@ -69,10 +93,20 @@ server.get('Show', function(req, res, next){
 })
 
 server.post('Submit', function(req, res, next){
-	var subject = getSubject(req.form.question);
-	var email = getEmail(req.form.question);
-	res.json({message: 'OK', request: req.form, subject: subject, email: email});
-	next();
+	try
+	{
+		var subject = getSubject(req.form.question);
+		var email = getEmail(req.form.question);
+		var template = 'mail/contactus.isml';
+		//sendMail({customer: req.form, subject: subject, email: email}, template);
+		res.json({message: 'OK', request: req.form, subject: subject, email: email});
+		//res.render('mail/contactus', {customer: req.form, subject: subject, email: email});
+		next();
+	}
+	catch (error){
+		res.json({error: error, request: req});
+		next();
+	}
 });
 
 module.exports = server.exports();
